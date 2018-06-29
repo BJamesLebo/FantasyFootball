@@ -1,0 +1,47 @@
+install.packages('rvest')
+library('rvest')
+
+url <- 'https://www.pro-football-reference.com/play-index/psl_finder.cgi?request=1&match=single&year_min=2017&year_max=2017&season_start=1&season_end=-1&pos%5B%5D=cb&draft_year_min=1936&draft_year_max=2018&draft_slot_min=1&draft_slot_max=500&draft_pick_in_round=pick_overall&conference=any&draft_pos%5B%5D=qb&draft_pos%5B%5D=rb&draft_pos%5B%5D=wr&draft_pos%5B%5D=te&draft_pos%5B%5D=e&draft_pos%5B%5D=t&draft_pos%5B%5D=g&draft_pos%5B%5D=c&draft_pos%5B%5D=ol&draft_pos%5B%5D=dt&draft_pos%5B%5D=de&draft_pos%5B%5D=dl&draft_pos%5B%5D=ilb&draft_pos%5B%5D=olb&draft_pos%5B%5D=lb&draft_pos%5B%5D=cb&draft_pos%5B%5D=s&draft_pos%5B%5D=db&draft_pos%5B%5D=k&draft_pos%5B%5D=p&c5val=1.0&order_by=pass_defended'
+
+webpage <- read_html(url)
+
+rank_data_html <- html_nodes(webpage,'th.right')
+rank_data <- html_text(rank_data_html)
+head(rank_data)
+
+#Converting the ranks to numbers
+rank_data <- as.numeric(rank_data)
+head(rank_data)
+
+#PLAYERS
+#Using CSS Selectors to Scrape the Player Names
+players_html <- html_nodes(webpage,'strong a')
+
+#Converting the player names to text
+players <- html_text(players_html)
+
+#Let's have a look at the players
+head(players)
+
+#TEAMS
+#Using CSS Selectors to Scrape the Teams
+teams_html <- html_nodes(webpage,'.left:nth-child(6) a')
+
+#Converting the player names to text
+teams <- html_text(teams_html)
+teams <- append(teams, "SEA", after=71) #using team player finished season with
+teams <- append(teams, "SFO", after=74) #for players on two teams
+
+#Let's have a look at the players
+head(teams)
+
+#PASSES DEFENDED
+#Using CSS Selectors to Scrape the Passes Defended Data
+passes_defended_html <- html_nodes(webpage,'.right:nth-child(13)')
+
+#Converting the Passes Defended Data to numbers
+passes_defended_data <- html_text(passes_defended_html)
+passes_defended <-as.numeric(passes_defended_data)
+
+#Let's have a look at the Passes Defended Data
+head(passes_defended)
