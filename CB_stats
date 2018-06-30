@@ -45,3 +45,14 @@ passes_defended <-as.numeric(passes_defended_data)
 
 #Let's have a look at the Passes Defended Data
 head(passes_defended)
+
+#INTERCEPTIONS
+#Using CSS Selectors to Scrape the Interception Data
+interception_html <- html_nodes(webpage,'.right:nth-child(10)')
+
+#Converting the Passes Defended Data to numbers
+interception_data <- html_text(interception_html)
+interceptions <-as.numeric(interception_data)
+
+#Let's have a look at the Passes Defended Data
+head(interceptions)
